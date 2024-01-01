@@ -1,4 +1,3 @@
-import random
 import re
 import string
 import datetime
@@ -6,6 +5,7 @@ import datetime
 from livestreamer.plugin import Plugin, PluginError, PluginOptions
 from livestreamer.plugin.api import http, validate
 from livestreamer.stream import HLSStream
+import secrets
 
 API_URL = "https://api.crunchyroll.com/{0}.0.json"
 API_DEFAULT_LOCALE = "en_US"
@@ -240,7 +240,7 @@ class Crunchyroll(Plugin):
         if not device_id:
             # Create a random device id and cache it for a year
             char_set = string.ascii_letters + string.digits
-            device_id = "".join(random.sample(char_set, 32))
+            device_id = "".join(secrets.SystemRandom().sample(char_set, 32))
             self.cache.set("device_id", device_id, 365 * 24 * 60 * 60)
 
         return device_id
