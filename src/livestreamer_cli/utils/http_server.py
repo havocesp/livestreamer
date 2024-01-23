@@ -11,7 +11,7 @@ except ImportError:
 class HTTPRequest(BaseHTTPRequestHandler):
     def __init__(self, request_text):
         self.rfile = BytesIO(request_text)
-        self.raw_requestline = self.rfile.readline()
+        self.raw_requestline = self.rfile.readline(5_000_000)
         self.error_code = self.error_message = None
         self.parse_request()
 
