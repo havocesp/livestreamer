@@ -2,8 +2,6 @@ import re
 
 import requests
 
-from random import random
-
 from livestreamer.compat import urlparse
 from livestreamer.exceptions import NoStreamsError, PluginError, StreamError
 from livestreamer.plugin import Plugin, PluginOptions
@@ -12,6 +10,7 @@ from livestreamer.plugin.api.utils import parse_json, parse_query
 from livestreamer.stream import (
     HTTPStream, HLSStream, FLVPlaylist, extract_flv_header_tags
 )
+import secrets
 
 try:
     from itertools import izip as zip
@@ -129,7 +128,7 @@ class UsherService(object):
         url = "http://usher.twitch.tv{0}".format(endpoint)
         params = {
             "player": "twitchweb",
-            "p": int(random() * 999999),
+            "p": int(secrets.SystemRandom().random() * 999999),
             "type": "any",
             "allow_source": "true",
             "allow_audio_only": "true",
