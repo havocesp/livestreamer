@@ -169,7 +169,6 @@ def output_stream_http(plugin, initial_streams, external=False, port=0):
                     console.logger.info("Stream not available, will re-fetch "
                                         "streams in 10 sec")
                     sleep(10)
-                    continue
             except PluginError as err:
                 console.logger.error(u"Unable to fetch new streams: {0}", err)
                 continue
