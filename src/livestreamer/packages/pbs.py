@@ -32,6 +32,7 @@ from types import ModuleType
 from functools import partial
 import warnings
 import platform
+from security import safe_command
 
 
 __version__ = "0.110"
@@ -443,7 +444,7 @@ If you're using glob.glob(), please use pbs.glob() instead." % self.path, stackl
         if call_args["err_to_out"]: stderr = subp.STDOUT
 
         # leave shell=False
-        process = subp.Popen(cmd, shell=False, env=call_args["env"],
+        process = safe_command.run(subp.Popen, cmd, shell=False, env=call_args["env"],
             cwd=call_args["cwd"],
             stdin=input_stream, stdout=stdout, stderr=stderr)
 
