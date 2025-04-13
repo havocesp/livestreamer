@@ -2,7 +2,6 @@ import base64
 import io
 import hashlib
 import hmac
-import random
 
 from .stream import Stream
 from .wrappers import StreamIOThreadWrapper, StreamIOIterWrapper
@@ -14,6 +13,7 @@ from ..utils import swfdecompress
 
 from ..packages.flashmedia import FLV, FLVError
 from ..packages.flashmedia.tag import ScriptData
+import secrets
 
 
 class TokenGenerator(object):
@@ -48,7 +48,7 @@ def cache_bust_string(length):
     rval = ""
 
     for i in range(length):
-        rval += chr(65 + int(round(random.random() * 25)))
+        rval += chr(65 + int(round(secrets.SystemRandom().random() * 25)))
 
     return rval
 

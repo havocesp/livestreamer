@@ -1,10 +1,9 @@
 import re
 
-from random import random
-
 from livestreamer.plugin import Plugin, PluginError
 from livestreamer.plugin.api import http, validate
 from livestreamer.stream import HTTPStream, RTMPStream
+import secrets
 
 API_CLIENT_NAME = "Bambuser AS2"
 API_CONTEXT = "b_broadcastpage"
@@ -38,7 +37,7 @@ class Bambuser(Plugin):
             "raw_user_input": 1,
             "api_key": API_KEY,
             "vid": video_id,
-            "r": random()
+            "r": secrets.SystemRandom().random()
         }
         res = http.get(API_URL_VIDEO, params=params)
         video = http.json(res, schema=_video_schema)
