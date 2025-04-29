@@ -8,6 +8,7 @@ from time import sleep
 from .compat import is_win32, stdout
 from .constants import DEFAULT_PLAYER_ARGUMENTS
 from .utils import ignored
+from security import safe_command
 
 if is_win32:
     import msvcrt
@@ -128,14 +129,14 @@ class PlayerOutput(Output):
                 self.stderr.close()
 
     def _open_call(self):
-        subprocess.call(self._create_arguments(),
+        safe_command.run(subprocess.call, self._create_arguments(),
                         stdout=self.stdout,
                         stderr=self.stderr)
 
     def _open_subprocess(self):
         # Force bufsize=0 on all Python versions to avoid writing the
         # unflushed buffer when closing a broken input pipe
-        self.player = subprocess.Popen(self._create_arguments(),
+        self.player = safe_command.run(subprocess.Popen, self._create_arguments(),
                                        stdin=self.stdin, bufsize=0,
                                        stdout=self.stdout,
                                        stderr=self.stderr)
