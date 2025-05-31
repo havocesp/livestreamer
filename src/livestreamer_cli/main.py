@@ -1,6 +1,5 @@
 import errno
 import os
-import requests
 import sys
 import signal
 import webbrowser
@@ -22,6 +21,7 @@ from .console import ConsoleOutput
 from .constants import CONFIG_FILES, PLUGINS_DIR, STREAM_SYNONYMS
 from .output import FileOutput, PlayerOutput
 from .utils import NamedPipe, HTTPServer, ignored, progress, stream_to_url
+from security import safe_requests
 
 ACCEPTABLE_ERRNO = (errno.EPIPE, errno.EINVAL, errno.ECONNRESET)
 QUIET_OPTIONS = ("json", "stream_url", "subprocess_cmdline", "quiet")
@@ -844,7 +844,7 @@ def check_version(force=False):
     latest_version = cache.get("latest_version")
 
     if force or not latest_version:
-        res = requests.get("https://pypi.python.org/pypi/livestreamer/json", timeout=60)
+        res = safe_requests.get("https://pypi.python.org/pypi/livestreamer/json", timeout=60)
         data = res.json()
         latest_version = data.get("info").get("version")
         cache.set("latest_version", latest_version, (60 * 60 * 24))
