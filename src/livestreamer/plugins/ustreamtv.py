@@ -2,7 +2,6 @@ import re
 
 from collections import namedtuple
 from functools import partial
-from random import randint
 from time import sleep
 
 from livestreamer.compat import urlparse, urljoin, range
@@ -14,6 +13,7 @@ from livestreamer.stream.flvconcat import FLVTagConcat
 from livestreamer.stream.segmented import (
     SegmentedStreamReader, SegmentedStreamWriter, SegmentedStreamWorker
 )
+import secrets
 
 try:
     import librtmp
@@ -193,7 +193,7 @@ if HAS_LIBRTMP:
 
 def create_ums_connection(app, media_id, page_url, password,
                           exception=PluginError):
-    url = RTMP_URL.format(randint(0, 0xffffff), media_id)
+    url = RTMP_URL.format(secrets.SystemRandom().randint(0, 0xffffff), media_id)
     params = {
         "application": app,
         "media": str(media_id),
@@ -606,8 +606,8 @@ class UStreamTV(Plugin):
             )
 
             url = RECORDED_URL.format(video_id)
-            random_hash = "{0:02x}{1:02x}".format(randint(0, 255),
-                                                  randint(0, 255))
+            random_hash = "{0:02x}{1:02x}".format(secrets.SystemRandom().randint(0, 255),
+                                                  secrets.SystemRandom().randint(0, 255))
             params = dict(hash=random_hash)
             stream = HTTPStream(self.session, url, params=params)
             yield "recorded", stream
